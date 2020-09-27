@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-Share a terminal session with a co-worker.
+Share a terminal with a co-worker.
 </p>
 
 
 Requirements
 ------------
 
-I use this on Ubuntu. YMMV on other OS and distros.
+I've tested this on Ubuntu only. YMMV on other OS and distros.
 
 
 Installation
@@ -19,14 +19,14 @@ Installation
 After cloning this repo, add its `bin/` subdirectory to your $PATH. For example:
 
 ```
-export PATH=/path/to/this/repo's/bin:$PATH
+export PATH=/path/to/this/repo/bin:$PATH
 ```
 
 
 Inviting Someone
 ----------------
 
-If you want to give a co-worker access to your remote machine, SSH to it,
+If you want to give a co-worker access to your terminal, SSH to it,
 then run the following outside of any tmux or screen session:
 
 ```
@@ -42,21 +42,21 @@ coterminal-add gh:relaxdiego
 ```
 
 
-Afterwards, tell them to SSH to your machine via:
+Afterwards, tell them to SSH to your machine:
 
 ```
-ssh <username>@<host>
+ssh <username>@<your-machine's-address>
 ```
 
-Run `coterminal-add` multiple times if you want to add more co-workers
-into the mix.
+Run `coterminal-add` for every co-worker you want to share your terminal
+with.
 
 
 Read-only Mode
 --------------
 
-If you want to invite someone but only want them read-only access--That
-is, they can't run commands on the shared terminal--just append `-r`:
+If you want to invite someone but only want give them read-only access
+(that is, all of their keyboard/mouse inputs are ignored) just append `-r`:
 
 ```
 coterminal-add gh:relaxdiego -r
@@ -66,7 +66,7 @@ coterminal-add gh:relaxdiego -r
 Remove Someone
 --------------
 
-When you are done working with your co-workers, kick them out via:
+When you are done sharing, kick them out via:
 
 ```
 coterminal-remove <username>
