@@ -16,11 +16,20 @@ I've tested this on Ubuntu only. YMMV on other OS and distros.
 Installation
 ------------
 
-After cloning this repo, add its `bin/` subdirectory to your $PATH. For example:
+Run:
 
 ```
-export PATH=/path/to/this/repo/bin:$PATH
+./install.sh
 ```
+
+The above command just adds this repo's `bin/` subdirectory to your $PATH
+by appending it to your `~/.bashrc`. After running the above, run:
+
+```
+source ~/.bashrc
+```
+
+Or just log out and log back in.
 
 
 Inviting Someone
