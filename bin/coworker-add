@@ -1,0 +1,76 @@
+#!/bin/bash
+set -euxo pipefail
+
+proto_user_str="$1"
+IFS=':' read -ra proto_user_arr<<<"$proto_user_str"
+username="${proto_user_arr[1]}"
+
+group_name=coworkers
+
+tmux_shared_socket=/var/coworkers/tmux-coworkers-socket
+tmux_cmd_prefix="tmux -S $tmux_shared_socket"
+
+# Check if the user already exists
+if id -u "$username" &>/dev/null; then
+    echo "The username '$username' already exists locally"
+    exit 1
+fi
+
+# Check that we got a valid argument and that ssh-import-id can use it
+if [ -z "$proto_user_str" ] || ! sudo ssh-import-id "$proto_user_str" -o /dev/null; then
+    echo "Please provide gh:<username> (for GitHub users) or lp:<username> (for Launchpad users)"
+    exit 1
+fi
+
+# Create $group_name group if it doesn't yet exist
+grep -q "$group_name" /etc/group || sudo groupadd "$group_name"
+
+# Create the tmux server if it doesn't already exist and make sure the
+# group has read/write permissions to the shared socket.
+if ! $tmux_cmd_prefix ls &>/dev/null; then
+    # Ensure that the parent dir of $tmux_shared_socket has the right permissions
+    socket_dir=$(dirname $tmux_shared_socket)
+    sudo mkdir -p $socket_dir
+    sudo chown $(whoami):$group_name $socket_dir
+    sudo chmod 0770 $socket_dir
+
+    # Create the first session in $tmux_shared_socket
+    $tmux_cmd_prefix new-session -s $group_name -d
+    sudo chown $(whoami):$group_name $tmux_shared_socket
+fi
+
+#
+
+# Create the user
+if ! id -u "$username" &>/dev/null; then
+    # Non-interactively add the user with limited access
+    sudo adduser --disabled-password --shell /bin/bash --gecos "" "$username"
+
+    # Make sure they are part of the group that has access to the shared socket
+    sudo adduser "$username" "$group_name"
+
+    # Import the user's public keys
+    sudo su "$username" -c "ssh-import-id $proto_user_str"
+
+    # Replace the bash shell with the tmux process at the end of .bashrc execution
+    sudo -- sh -c "echo >> /home/$username/.bashrc"
+    sudo -- sh -c "echo 'exec $tmux_cmd_prefix attach -t $group_name' >> /home/$username/.bashrc"
+fi
+
+# If we're already communicating with the tmux server behind $tmux_shared_socket,
+# then just exit to avoid connecting twice.
+[ "$tmux_shared_socket" == "$(echo $TMUX | cut -f1 -d',')" ] && exit 0
+
+if [[ $TERM =~ screen ]]; then
+    # We are already in another tmux session. Tell user to run the following
+    # command outside of tmux.
+    { set +x; } >/dev/null
+    echo
+    echo "Run outside of tmux:"
+    echo
+    echo "  $tmux_cmd_prefix attach -t $group_name"
+    echo
+else
+    # We're not in another tmux session. Attach to the shared one.
+    $tmux_cmd_prefix attach -t $group_name
+fi
