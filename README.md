@@ -2,8 +2,9 @@
   <img src="https://raw.githubusercontent.com/relaxdiego/coterminal/main/logo.png">
 </p>
 
-
-Share a tmux session with a co-worker on a remote machine.
+<p align="center">
+Share a terminal session with a co-worker.
+</p>
 
 
 Requirements
@@ -22,8 +23,8 @@ export PATH=/path/to/this/repo's/bin:$PATH
 ```
 
 
-Usage
------
+Inviting Someone
+----------------
 
 If you want to give a co-worker access to your remote machine, SSH to it,
 then run the following outside of any tmux or screen session:
@@ -50,6 +51,20 @@ ssh <username>@<host>
 Run `coterminal-add` multiple times if you want to add more co-workers
 into the mix.
 
+
+Read-only Mode
+--------------
+
+If you want to invite someone but only want them read-only access--That
+is, they can't run commands on the shared terminal--just append `-r`:
+
+```
+coterminal-add gh:relaxdiego -r
+```
+
+
+Remove Someone
+--------------
 
 When you are done working with your co-workers, kick them out via:
 

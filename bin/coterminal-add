@@ -5,6 +5,9 @@ proto_user_str="$1"
 IFS=':' read -ra proto_user_arr<<<"$proto_user_str"
 username="${proto_user_arr[1]}"
 
+readonly=""
+[ -n "$2" ] && [ "$2" == "-r" ] && readonly="-r"
+
 group_name=coterminal
 
 tmux_shared_socket=/var/coterminal/tmux-coterminal-socket
@@ -54,7 +57,7 @@ if ! id -u "$username" &>/dev/null; then
 
     # Replace the bash shell with the tmux process at the end of .bashrc execution
     sudo -- sh -c "echo >> /home/$username/.bashrc"
-    sudo -- sh -c "echo 'exec $tmux_cmd_prefix attach -t $group_name' >> /home/$username/.bashrc"
+    sudo -- sh -c "echo 'exec $tmux_cmd_prefix attach -t $group_name $readonly' >> /home/$username/.bashrc"
 fi
 
 # If we're already communicating with the tmux server behind $tmux_shared_socket,
