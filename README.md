@@ -64,8 +64,8 @@ with.
 Read-only Mode
 --------------
 
-If you want to invite someone but only want give them read-only access
-(that is, all of their keyboard/mouse inputs are ignored) just append `-r`:
+If you want to invite someone but only with read-only access (that is,
+all of their keyboard/mouse inputs are ignored) just append `-r` as follows:
 
 ```
 coterminal-add gh:relaxdiego -r

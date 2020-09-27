@@ -42,8 +42,6 @@ if ! $tmux_cmd_prefix ls &>/dev/null; then
     sudo chown $(whoami):$group_name $tmux_shared_socket
 fi
 
-#
-
 # Create the user
 if ! id -u "$username" &>/dev/null; then
     # Non-interactively add the user with limited access
