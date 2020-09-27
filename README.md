@@ -1,5 +1,7 @@
-Coterminal
-==========
+<p align="center">
+  <img src="https://raw.githubusercontent.com/relaxdiego/coterminal/main/logo.png">
+</p>
+
 
 Share a tmux session with a co-worker on a remote machine.
 
