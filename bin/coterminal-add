@@ -5,9 +5,9 @@ proto_user_str="$1"
 IFS=':' read -ra proto_user_arr<<<"$proto_user_str"
 username="${proto_user_arr[1]}"
 
-group_name=coworkers
+group_name=coterminals
 
-tmux_shared_socket=/var/coworkers/tmux-coworkers-socket
+tmux_shared_socket=/var/coterminals/tmux-coterminals-socket
 tmux_cmd_prefix="tmux -S $tmux_shared_socket"
 
 # Check if the user already exists
