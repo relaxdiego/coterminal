@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -exo pipefail
 
 proto_user_str="$1"
 IFS=':' read -ra proto_user_arr<<<"$proto_user_str"
