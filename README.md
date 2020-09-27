@@ -23,20 +23,20 @@ Run:
 ```
 
 The above command just adds this repo's `bin/` subdirectory to your $PATH
-by appending it to your `~/.bashrc`. After running the above, run:
+by appending the following to your `~/.bashrc`.
 
 ```
-source ~/.bashrc
+export PATH=/path/to/coterminal/bin:$PATH
 ```
 
-Or just log out and log back in.
+After running the above, run `source ~/.bashrc` or just log out and log back in.
 
 
 Inviting Someone
 ----------------
 
 If you want to give a co-worker access to your terminal, SSH to it,
-then run the following outside of any tmux or screen session:
+then run the following **outside of any tmux or screen session**:
 
 ```
 coterminal-add <gh|lp>:<username>
