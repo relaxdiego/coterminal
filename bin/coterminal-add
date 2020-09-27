@@ -26,7 +26,7 @@ if [ -z "$proto_user_str" ] || ! sudo ssh-import-id "$proto_user_str" -o /dev/nu
 fi
 
 # Create $group_name group if it doesn't yet exist
-grep -q "$group_name" /etc/group || sudo groupadd "$group_name"
+grep -q -E "^${group_name}:" /etc/group || sudo groupadd "$group_name"
 
 # Create the tmux server if it doesn't already exist and make sure the
 # group has read/write permissions to the shared socket.
